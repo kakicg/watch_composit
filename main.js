@@ -42,7 +42,7 @@ if (!fs.existsSync(print_dir) || test_mode) {
 eventLogger.info(`画像書込みフォルダー: ${print_dir}`)
 
 const sharp = require('sharp')
-const frame_dir = '../frame'
+const frame_dir = './frame'
 const frameWidth = 4800
 const frameHeight = 3200
 
