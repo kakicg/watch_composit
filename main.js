@@ -19,6 +19,7 @@ const eventLogger = log4js.getLogger('event')
 
 //監視するフォルダーの相対パス
 let watch_dir = env.WATCH_DIR
+let watch_dir2 = env.WATCH_DIR2
 if (!fs.existsSync(watch_dir) ) {
     eventLogger.error(`写真供給側のネットワーク(${watch_dir})に接続されていません。`)
     watch_dir = "../watch"
@@ -47,6 +48,11 @@ const frameHeight = 3200
 
 //chokidarの初期化
 const watcher = chokidar.watch(watch_dir+"/",{
+    ignored:/[\/\\]\./,
+    persistent:true
+})
+
+const watcher2 = chokidar.watch(watch_dir2+"/",{
     ignored:/[\/\\]\./,
     persistent:true
 })
@@ -97,3 +103,15 @@ watcher.on('ready',function(){
         }
    })
 }) //watcher.on('ready',function(){
+
+watcher2.on('ready',function(){
+
+    //準備完了
+    // console.clear()
+    console.log("サブフォルダーを監視中")
+    
+    //ファイル受け取り
+    watcher2.on( 'add', function(file_name) {
+        console.log(`${file_name}が追加されました。`)
+    })
+}) //watcher2.on('ready',function(){
