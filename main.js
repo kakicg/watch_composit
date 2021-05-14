@@ -67,7 +67,7 @@ const composit = (src, dest, frames) => {
         } )
         .composite( frames )
         // .extract({left: 0, top: 0, width: frameWidth, height: frameHeight})
-        .jpeg({quality: 100})
+        .jpeg({quality: 80})
         .toFile(`${dest}`)
         .then( () => {
             sys.remove_file(src);
@@ -92,7 +92,7 @@ watcher.on('ready',function(){
         eventLogger.info(`追加されたファイル: ${new_name}`)          
         let exts = new_name.split(".")
         let src = watch_dir + "/" + new_name
-        let dest = print_dir + "/" + new_name
+        let dest = "../watch2/" + new_name
 
         if(exts.length>1) {
             ext=exts[exts.length-1]
@@ -113,5 +113,17 @@ watcher2.on('ready',function(){
     //ファイル受け取り
     watcher2.on( 'add', function(file_name) {
         console.log(`${file_name}が追加されました。`)
+
+        const destinationPath = path.join(print_dir, path.basename(file_name));
+
+        setTimeout(() => {
+            fs.rename(file_name, destinationPath, function (err) {
+                if (err) {
+                    throw err
+                } else {
+                    console.log("Successfully moved the file!");
+                }
+            });
+        }, 1000)
     })
 }) //watcher2.on('ready',function(){
